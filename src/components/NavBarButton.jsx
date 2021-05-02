@@ -18,18 +18,26 @@ const NavBarButton = () => {
       
       
         // event apple:2
-        const moveToCart = e => {
+        const moveToCart = async (e) => {
           let [name, num] = e.target.innerHTML.split(":");
+          const myCart = [...cart]
+          console.log(myCart)
+
           if(num <= 0) return
+
           // innerHTML should be format name:3
           // use newStock = stock.map to find "name" and decrease number in stock by 1
           // only if instock is >=  do we move item to Cart and update stock
           let newStock = stock.map((item, index) => {
-            if (item.name == name) item.instock--;
+            if (item.name === name) 
+                item.instock--; 
+                
+                
             return item;
+            
           });
           setStock(newStock);
-          setCart([...cart])
+          await setCart([...cart, name])
         };
         const updatedList = stock.map((item, index) => {
           return (
@@ -38,11 +46,20 @@ const NavBarButton = () => {
             </Button>
           );
         });
+
+        const shoppingCart = cart.map((item, index) => {
+            return (
+            <Button key={index}>
+{item}
+            </Button>
+        )
+        })
         // note that React needs to have a single Parent
         return (
           <>
             <ul style={{ listStyleType: "none" }} >{updatedList}</ul>
             <h1>Shopping Cart</h1>
+            <ul style={{ listStyleType: "none" }}>{shoppingCart}</ul>
             
           </>
         );
